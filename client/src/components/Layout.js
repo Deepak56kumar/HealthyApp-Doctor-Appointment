@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import '../Layout.css';
 import {Link, useLocation, useNavigate} from 'react-router-dom'
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import { Badge } from "antd";
+import {setUser} from '../redux/userSlice';
 function Layout({ children }) {
     const [collapsed,setCollapsed]=useState(false);
     const {user}=useSelector((state)=>state.user);
     const navigate=useNavigate();
     const location=useLocation();
+    const dispatch=useDispatch();
     const userMenu = [
         {
             name: 'Home',
@@ -87,7 +89,8 @@ const role = user?.isAdmin ? "Admin" : user?.isDoctor ? "Doctor" : "User";
                         );
                         } )}
                         <div className={`d-flex menu-items`} onClick={()=>{
-                            localStorage.clear()
+                            localStorage.clear();
+                            dispatch(setUser(null));
                             navigate('/login')
                         }}>
                                 <i className='ri-logout-circle-line'></i>
